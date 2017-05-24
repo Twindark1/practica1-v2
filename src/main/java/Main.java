@@ -16,7 +16,7 @@ public class Main {
         // Parte Inicial
 
         Scanner scanner = new Scanner(System.in);
-        String url = "https://en.wikipedia.org/wiki/John_Wick:_Chapter_2";
+        String url = "https://www.pucmm.edu.do/";
 
         Document doc = Jsoup.connect(url).get();
 
@@ -33,9 +33,17 @@ public class Main {
 
         // Parte C
 
+        int i=1;
+        //  Elements newsHeadlines = doc.select("#mp-itn img");
         for (Element sentence : doc.getElementsByTag("p"))
         {
-            // sentence.getElementById("")
+            System.out.print("La cantidad de elementos en P " + i + " es igual a: ");
+            System.out.println(sentence.getElementsByTag("img").size());
+            i++;
         }
+
+        // Parte D
+
+        Elements forms = doc.getElementsByTag("form");
     }
 }
