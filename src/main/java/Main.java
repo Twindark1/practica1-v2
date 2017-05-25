@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import java.util.Scanner;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
 
 public class Main {
@@ -16,7 +17,7 @@ public class Main {
         // Parte Inicial
 
         Scanner scanner = new Scanner(System.in);
-        String url = "https://www.pucmm.edu.do/";
+        String url = "https://webapp-st.pucmm.edu.do/WebSISE/Estudiante/Login.aspx?ReturnUrl=/WebSISE/Estudiante/";
 
         Document doc = Jsoup.connect(url).get();
 
@@ -44,6 +45,19 @@ public class Main {
 
         // Parte D
 
-        Elements forms = doc.getElementsByTag("form");
+        int contadorGet=0;
+        int contadorPost=0;
+
+        Elements formularios = doc.getElementsByTag("form");
+        for (FormElement forms :formularios.forms())
+        {
+            if(forms.attr("method").equalsIgnoreCase("get"))
+                contadorGet++;
+
+            else if (forms.attr("method").equalsIgnoreCase("post"))
+                contadorPost++;
+        }
+
+
     }
 }
