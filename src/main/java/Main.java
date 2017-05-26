@@ -17,6 +17,7 @@ public class Main {
         // Parte Inicial
 
         Scanner scanner = new Scanner(System.in);
+  //      String path = scanner.next();
         String url = "https://webapp-st.pucmm.edu.do/WebSISE/Estudiante/Login.aspx?ReturnUrl=/WebSISE/Estudiante/";
 
         Document doc = Jsoup.connect(url).get();
@@ -58,6 +59,22 @@ public class Main {
                 contadorPost++;
         }
 
+        System.out.println("La cantidad de formularios con metodo GET es = " +  contadorGet);
+        System.out.println("La cantidad de formularios con metodo POST es = " +  contadorPost);
+
+        // Parte E
+
+        for (FormElement forms :formularios.forms())
+        {
+            Elements inputs = forms.getElementsByTag("input");
+            System.out.println("args = [" + inputs.toString() + "]");
+            System.out.println("inputs = " + inputs.attr("type").toString());
+        }
+
+        // Parte F
+
+        Document documento = Jsoup.parse(doc.html());
+        Elements formulario = documento.getElementsByTag("form");
 
     }
 }
