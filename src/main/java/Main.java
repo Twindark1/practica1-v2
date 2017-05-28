@@ -2,6 +2,7 @@
  * Created by cesarjose on 5/24/17.
  */
 
+import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
 import org.jsoup.Jsoup;
@@ -17,11 +18,10 @@ public class Main {
         // Parte Inicial
 
         Scanner scanner = new Scanner(System.in);
-  //      String path = scanner.next();
+        //String path = scanner.next();
         String url = "https://webapp-st.pucmm.edu.do/WebSISE/Estudiante/Login.aspx?ReturnUrl=/WebSISE/Estudiante/";
 
         Document doc = Jsoup.connect(url).get();
-
         // Parte A
 
         String page = doc.html();
@@ -36,10 +36,9 @@ public class Main {
         // Parte C
 
         int i=1;
-        //  Elements newsHeadlines = doc.select("#mp-itn img");
         for (Element sentence : doc.getElementsByTag("p"))
         {
-            System.out.print("La cantidad de elementos en P " + i + " es igual a: ");
+            System.out.print("La cantidad de Imagenes dentro de P " + i + " es igual a: ");
             System.out.println(sentence.getElementsByTag("img").size());
             i++;
         }
@@ -64,11 +63,15 @@ public class Main {
 
         // Parte E
 
+        i=1;
         for (FormElement forms :formularios.forms())
         {
             Elements inputs = forms.getElementsByTag("input");
-            System.out.println("args = [" + inputs.toString() + "]");
-            System.out.println("inputs = " + inputs.attr("type").toString());
+            for (Element x : inputs)
+            {
+                System.out.println("El input "+ i +  " = " + x.attr("type").toString());
+                i++;
+            }
         }
 
         // Parte F
@@ -76,5 +79,17 @@ public class Main {
         Document documento = Jsoup.parse(doc.html());
         Elements formulario = documento.getElementsByTag("form");
 
+        for (FormElement forms :formulario.forms())
+        {
+            if(forms.attr("method").equalsIgnoreCase("post"))
+            {
+                Connection.Response response;
+                response = Jsoup.connect("https://webapp-st.pucmm.edu.do/WebSISE/Estudiante/Login.aspx?ReturnUrl=/WebSISE/Estudiante/")
+                        .data("asignatura","practica1")
+                        .execute();
+
+                System.out.println("Respuesta es: "+ response.body().toString());
+            }
+        }
     }
 }
