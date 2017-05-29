@@ -17,9 +17,10 @@ public class Main {
 
         // Parte Inicial
 
+        System.out.println("Escriba la url de la pagina: ");
+
         Scanner scanner = new Scanner(System.in);
-        //String path = scanner.next();
-        String url = "https://webapp-st.pucmm.edu.do/WebSISE/Estudiante/Login.aspx?ReturnUrl=/WebSISE/Estudiante/";
+        String url = scanner.next();
 
         Document doc = Jsoup.connect(url).get();
         // Parte A
@@ -69,7 +70,7 @@ public class Main {
             Elements inputs = forms.getElementsByTag("input");
             for (Element x : inputs)
             {
-                System.out.println("El input "+ i +  " = " + x.attr("type").toString());
+                System.out.println("El input "+ i +  " = " + x.attr("type"));
                 i++;
             }
         }
@@ -84,11 +85,11 @@ public class Main {
             if(forms.attr("method").equalsIgnoreCase("post"))
             {
                 Connection.Response response;
-                response = Jsoup.connect("https://webapp-st.pucmm.edu.do/WebSISE/Estudiante/Login.aspx?ReturnUrl=/WebSISE/Estudiante/")
+                response = Jsoup.connect(url)
                         .data("asignatura","practica1")
                         .execute();
 
-                System.out.println("Respuesta es: "+ response.body().toString());
+                System.out.println("La respuesta del servidor es: "+ response.body());
             }
         }
     }
