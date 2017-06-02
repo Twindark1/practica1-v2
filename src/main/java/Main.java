@@ -22,12 +22,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String url = scanner.next();
 
+        Connection.Response responseParagraph = Jsoup.connect(url).execute();
         Document doc = Jsoup.connect(url).get();
+
         // Parte A
 
-        String page = doc.html();
-        String[] lines = page.split("\n");
-        System.out.println("La cantidad de lineas es: "+ lines.length);
+        System.out.println("La cantidad de lineas es: "+ responseParagraph.body().split("\n").length);
 
         // Parte B
 
@@ -77,20 +77,22 @@ public class Main {
 
         // Parte F
 
-        Document documento = Jsoup.parse(doc.html());
-        Elements formulario = documento.getElementsByTag("form");
+        i = 1;
+        Document newDocument;
 
-        for (FormElement forms :formulario.forms())
+        for (Element form: formularios.forms())
         {
-            if(forms.attr("method").equalsIgnoreCase("post"))
-            {
-                Connection.Response response;
-                response = Jsoup.connect(url)
-                        .data("asignatura","practica1")
-                        .execute();
+            System.out.println("Formulario " + i + ":");
+            Elements posts = form.getElementsByAttributeValueContaining("method","post");
 
-                System.out.println("La respuesta del servidor es: "+ response.body());
+            for (Element post: posts)
+            {
+                String absURL = post.absUrl("action");
+                newDocument = Jsoup.connect(absURL).data("asignatura","practica1").post();
+                System.out.println(newDocument.body().toString());
             }
+            i++;
+            System.out.println("\n");
         }
     }
 }
